@@ -54,7 +54,7 @@
 }
 
 .warning-section.critical {
-  border-color: #dc2626;
+  border-color: #c1121f;
   background: #fef2f2;
 }
 
@@ -71,7 +71,8 @@
 }
 
 .warning-section.critical .warning-section-title {
-  color: #991b1b;
+  color: #c1121f;
+  font-weight: 700;
 }
 
 .warning-icon {

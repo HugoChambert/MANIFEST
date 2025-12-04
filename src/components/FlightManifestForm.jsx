@@ -175,6 +175,7 @@ function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
               <label htmlFor="aircraft">Aircraft Type & Registration *</label>
               <select
                 id="aircraft"
+                value={selectedAircraft?.id || ''}
                 onChange={handleAircraftChange}
                 className={`form-control ${errors.aircraft ? 'error' : ''}`}
                 required
