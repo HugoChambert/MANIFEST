@@ -39,8 +39,12 @@ function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
 
   const handleAircraftChange = (e) => {
     const aircraftId = e.target.value;
-    const aircraft = aircraftId ? JSON.parse(aircraftId) : null;
-    setSelectedAircraft(aircraft);
+    if (aircraftId) {
+      const foundAircraft = aircraft.find(a => a.id === aircraftId);
+      setSelectedAircraft(foundAircraft || null);
+    } else {
+      setSelectedAircraft(null);
+    }
     setErrors({ ...errors, aircraft: '' });
   };
 
@@ -158,7 +162,7 @@ function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
         </div>
         {onCancel && (
           <button onClick={onCancel} className="btn-cancel">
-            Cancel
+            CANCEL
           </button>
         )}
       </div>
@@ -177,7 +181,7 @@ function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
               >
                 <option value="">Select Aircraft...</option>
                 {aircraft.map(a => (
-                  <option key={a.id} value={JSON.stringify(a)}>
+                  <option key={a.id} value={a.id}>
                     {a.name} - {a.registration}
                   </option>
                 ))}
@@ -399,11 +403,11 @@ function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
             disabled={saving || !selectedAircraft}
             className="btn-primary"
           >
-            {saving ? 'Saving...' : 'Save Flight Manifest'}
+            {saving ? 'SAVING...' : 'SAVE FLIGHT MANIFEST'}
           </button>
           {onCancel && (
             <button onClick={onCancel} className="btn-secondary">
-              Cancel
+              CANCEL
             </button>
           )}
         </div>

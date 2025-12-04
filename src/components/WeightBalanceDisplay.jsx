@@ -66,9 +66,6 @@ function WeightBalanceDisplay({ calculations, aircraft }) {
       </div>
 
       <div className={`airworthiness-status ${calculations.isWithinLimits ? 'safe' : 'unsafe'}`}>
-        <div className="status-icon">
-          {calculations.isWithinLimits ? '✓' : '✗'}
-        </div>
         <div className="status-text">
           <strong>{calculations.isWithinLimits ? 'AIRCRAFT AIRWORTHY' : 'AIRCRAFT NOT AIRWORTHY'}</strong>
           <p>

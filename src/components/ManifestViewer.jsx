@@ -70,7 +70,7 @@ function ManifestViewer({ manifestId, onClose }) {
     return (
       <div className="manifest-viewer-error">
         <p>Error loading manifest data</p>
-        <button onClick={onClose} className="btn-close-error">Close</button>
+        <button onClick={onClose} className="btn-close-error">CLOSE</button>
       </div>
     );
   }
@@ -83,10 +83,10 @@ function ManifestViewer({ manifestId, onClose }) {
     <div className="manifest-viewer">
       <div className="viewer-actions no-print">
         <button onClick={onClose} className="btn-back">
-          ← Back to Dashboard
+          BACK TO DASHBOARD
         </button>
         <button onClick={handlePrint} className="btn-print">
-          🖨 Print Manifest
+          PRINT MANIFEST
         </button>
       </div>
 
@@ -98,7 +98,7 @@ function ManifestViewer({ manifestId, onClose }) {
           </div>
           <div className="manifest-status-header">
             <div className={`status-indicator ${manifest.is_within_limits ? 'safe' : 'unsafe'}`}>
-              {manifest.is_within_limits ? '✓ AIRWORTHY' : '✗ NOT AIRWORTHY'}
+              {manifest.is_within_limits ? 'AIRWORTHY' : 'NOT AIRWORTHY'}
             </div>
           </div>
         </div>

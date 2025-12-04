@@ -82,10 +82,15 @@ function PassengerList({ passengers, setPassengers, maxPassengers, maxRows }) {
               value={newPassenger.rowNumber}
               onChange={(e) => setNewPassenger({ ...newPassenger, rowNumber: parseInt(e.target.value) })}
               className="form-control"
+              disabled={!maxRows || maxRows === 0}
             >
-              {[...Array(maxRows)].map((_, i) => (
-                <option key={i + 1} value={i + 1}>Row {i + 1}</option>
-              ))}
+              {maxRows > 0 ? (
+                [...Array(maxRows)].map((_, i) => (
+                  <option key={i + 1} value={i + 1}>Row {i + 1}</option>
+                ))
+              ) : (
+                <option value="">Select aircraft first</option>
+              )}
             </select>
           </div>
           <div className="form-group">
@@ -94,9 +99,9 @@ function PassengerList({ passengers, setPassengers, maxPassengers, maxRows }) {
               type="button"
               onClick={handleAddPassenger}
               className="btn-add"
-              disabled={!newPassenger.name || !newPassenger.weight || !newPassenger.seatPosition}
+              disabled={!newPassenger.name || !newPassenger.weight || !newPassenger.seatPosition || !maxRows}
             >
-              Add Passenger
+              ADD PASSENGER
             </button>
           </div>
         </div>
@@ -121,7 +126,7 @@ function PassengerList({ passengers, setPassengers, maxPassengers, maxRows }) {
                 onClick={() => handleRemovePassenger(index)}
                 className="btn-remove"
               >
-                Remove
+                REMOVE
               </button>
             </div>
           ))}

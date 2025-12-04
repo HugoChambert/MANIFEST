@@ -21,8 +21,7 @@ function SeatingChart({ passengers, aircraft }) {
       <h4 className="seating-chart-title">Seating Chart</h4>
       <div className="seating-chart">
         <div className="cockpit">
-          <div className="cockpit-icon">✈</div>
-          <div className="cockpit-label">Cockpit</div>
+          <div className="cockpit-label">COCKPIT</div>
         </div>
 
         <div className="cabin">
@@ -77,8 +76,7 @@ function SeatingChart({ passengers, aircraft }) {
         </div>
 
         <div className="cargo">
-          <div className="cargo-icon">📦</div>
-          <div className="cargo-label">Baggage</div>
+          <div className="cargo-label">BAGGAGE</div>
         </div>
       </div>
 
