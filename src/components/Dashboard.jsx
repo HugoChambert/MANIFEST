@@ -85,38 +85,33 @@ function Dashboard({ onCreateNew, onViewManifest }) {
           <p className="dashboard-subtitle">View and manage all flight manifests</p>
         </div>
         <button onClick={onCreateNew} className="btn-create-new">
-          <span className="btn-icon">+</span>
-          Create New Manifest
+          CREATE NEW MANIFEST
         </button>
       </div>
 
       <div className="stats-grid">
         <div className="stat-card">
-          <div className="stat-icon total">📋</div>
           <div className="stat-content">
+            <div className="stat-label">TOTAL MANIFESTS</div>
             <div className="stat-value">{stats.total}</div>
-            <div className="stat-label">Total Manifests</div>
           </div>
         </div>
-        <div className="stat-card">
-          <div className="stat-icon safe">✓</div>
+        <div className="stat-card safe">
           <div className="stat-content">
+            <div className="stat-label">WITHIN LIMITS</div>
             <div className="stat-value">{stats.safe}</div>
-            <div className="stat-label">Within Limits</div>
           </div>
         </div>
-        <div className="stat-card">
-          <div className="stat-icon warning">⚠</div>
+        <div className="stat-card warning">
           <div className="stat-content">
+            <div className="stat-label">WITH WARNINGS</div>
             <div className="stat-value">{stats.warnings}</div>
-            <div className="stat-label">With Warnings</div>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon today">📅</div>
           <div className="stat-content">
+            <div className="stat-label">TODAY'S FLIGHTS</div>
             <div className="stat-value">{stats.today}</div>
-            <div className="stat-label">Today's Flights</div>
           </div>
         </div>
       </div>
@@ -156,16 +151,15 @@ function Dashboard({ onCreateNew, onViewManifest }) {
       <div className="manifests-table-container">
         {filteredManifests.length === 0 ? (
           <div className="empty-state-large">
-            <div className="empty-icon">📋</div>
-            <h3>No manifests found</h3>
+            <h3>NO MANIFESTS FOUND</h3>
             <p>
               {searchTerm
-                ? 'Try adjusting your search terms'
-                : 'Create your first flight manifest to get started'}
+                ? 'Adjust search criteria to find manifests'
+                : 'Create your first flight manifest to begin operations'}
             </p>
             {!searchTerm && (
               <button onClick={onCreateNew} className="btn-create-first">
-                Create First Manifest
+                CREATE FIRST MANIFEST
               </button>
             )}
           </div>
@@ -199,7 +193,7 @@ function Dashboard({ onCreateNew, onViewManifest }) {
                   <td>{manifest.calculated_cg ? parseFloat(manifest.calculated_cg).toFixed(2) + '"' : 'N/A'}</td>
                   <td>
                     <span className={`status-badge ${manifest.is_within_limits ? 'safe' : 'warning'}`}>
-                      {manifest.is_within_limits ? '✓ Safe' : '⚠ Warning'}
+                      {manifest.is_within_limits ? 'SAFE' : 'WARNING'}
                     </span>
                   </td>
                   <td>
@@ -209,14 +203,14 @@ function Dashboard({ onCreateNew, onViewManifest }) {
                         className="btn-action view"
                         title="View Manifest"
                       >
-                        View
+                        VIEW
                       </button>
                       <button
                         onClick={() => handleDelete(manifest.id)}
                         className="btn-action delete"
                         title="Delete Manifest"
                       >
-                        Delete
+                        DELETE
                       </button>
                     </div>
                   </td>

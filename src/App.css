@@ -7,95 +7,85 @@
 }
 
 .app-header {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-  padding: 32px;
+  background: #1a1a1a;
+  padding: 0;
   margin-bottom: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-.app-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-  opacity: 0.5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-bottom: 3px solid #d4af37;
 }
 
 .header-content {
-  position: relative;
-  z-index: 1;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 24px 32px;
 }
 
 .header-logo-section {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 16px;
   margin-bottom: 8px;
 }
 
 .header-content h1 {
   color: #ffffff;
-  font-size: 2.75rem;
-  font-weight: 800;
+  font-size: 1.75rem;
+  font-weight: 600;
   margin: 0;
-  letter-spacing: -0.5px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .header-badge {
-  padding: 6px 14px;
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-  color: #ffffff;
-  border-radius: 20px;
-  font-size: 0.875rem;
+  padding: 4px 12px;
+  background: #d4af37;
+  color: #1a1a1a;
+  border-radius: 2px;
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+  letter-spacing: 1px;
 }
 
 .header-content h2 {
-  color: #cbd5e1;
-  font-size: 1.375rem;
-  font-weight: 500;
+  color: #a0a0a0;
+  font-size: 0.9375rem;
+  font-weight: 400;
   letter-spacing: 0.5px;
   margin: 0;
+  text-transform: uppercase;
 }
 
 .app-main {
   flex: 1;
   background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e0e0e0;
   overflow: hidden;
   margin-bottom: 24px;
 }
 
 .app-footer {
   text-align: center;
-  padding: 24px 32px;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  border-radius: 12px;
+  padding: 20px 32px;
+  background: #ffffff;
+  border-top: 1px solid #e0e0e0;
   margin-bottom: 24px;
 }
 
 .app-footer p {
   margin: 0;
-  color: #64748b;
-  font-size: 0.9375rem;
-  font-weight: 600;
+  color: #666666;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .footer-note {
-  margin-top: 8px !important;
-  font-size: 0.8125rem !important;
-  color: #94a3b8 !important;
-  font-weight: 500 !important;
+  margin-top: 4px !important;
+  font-size: 0.75rem !important;
+  color: #999999 !important;
+  font-weight: 400 !important;
 }
 
 .loading-container {
@@ -104,15 +94,15 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  color: #ffffff;
+  color: #1a1a1a;
   gap: 20px;
 }
 
 .loading-spinner {
-  width: 56px;
-  height: 56px;
-  border: 5px solid rgba(255, 255, 255, 0.15);
-  border-top-color: #ffffff;
+  width: 48px;
+  height: 48px;
+  border: 3px solid #e0e0e0;
+  border-top-color: #d4af37;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -124,9 +114,11 @@
 }
 
 .loading-container p {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 0.9375rem;
+  font-weight: 400;
   letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #666666;
 }
 
 @media (max-width: 1024px) {
@@ -134,23 +126,22 @@
     max-width: 100%;
   }
 
-  .app-header {
-    padding: 24px;
+  .header-content {
+    padding: 20px 24px;
   }
 
   .header-content h1 {
-    font-size: 2.25rem;
+    font-size: 1.5rem;
   }
 
   .header-content h2 {
-    font-size: 1.125rem;
+    font-size: 0.875rem;
   }
 }
 
 @media (max-width: 768px) {
-  .app-header {
-    padding: 20px;
-    margin-bottom: 16px;
+  .header-content {
+    padding: 16px 20px;
   }
 
   .header-logo-section {
@@ -160,11 +151,11 @@
   }
 
   .header-content h1 {
-    font-size: 1.875rem;
+    font-size: 1.25rem;
   }
 
   .header-content h2 {
-    font-size: 1rem;
+    font-size: 0.8125rem;
   }
 
   .app-main {
@@ -178,16 +169,20 @@
 }
 
 @media (max-width: 480px) {
+  #root {
+    padding: 8px;
+  }
+
   .header-content h1 {
-    font-size: 1.5rem;
+    font-size: 1.125rem;
   }
 
   .header-badge {
-    font-size: 0.75rem;
-    padding: 4px 10px;
+    font-size: 0.6875rem;
+    padding: 3px 10px;
   }
 
   .header-content h2 {
-    font-size: 0.875rem;
+    font-size: 0.75rem;
   }
 }
