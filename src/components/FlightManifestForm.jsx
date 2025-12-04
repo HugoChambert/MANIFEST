@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { calculateWeightAndBalance } from '../utils/weightBalance';
-import InteractiveAircraftDiagram from './InteractiveAircraftDiagram';
 import SeatModal from './SeatModal';
 import CargoModal from './CargoModal';
 import WarningPanel from './WarningPanel';
 import WeightBalanceDisplay from './WeightBalanceDisplay';
+import SeatingChart from './SeatingChart';
+import PassengerList from './PassengerList';
 import './FlightManifestForm.css';
 
 function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
@@ -361,14 +362,38 @@ function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
         </div>
 
         <div className="form-main">
-          <InteractiveAircraftDiagram
-            aircraft={selectedAircraft}
-            passengers={passengers}
-            onSeatClick={handleSeatClick}
-            onCargoClick={handleCargoClick}
-            fuel={formData.fuelOnboard ? parseFloat(formData.fuelOnboard) * (selectedAircraft?.fuel_weight_per_gallon || 6) : 0}
-            baggage={baggage}
-          />
+          <div className="seating-section">
+            <h3>Seating Configuration</h3>
+            <SeatingChart
+              aircraft={selectedAircraft}
+              passengers={passengers}
+              onSeatClick={handleSeatClick}
+            />
+            <PassengerList
+              passengers={passengers}
+              onRemove={handleRemoveSeat}
+            />
+
+            <div className="cargo-controls">
+              <h3>Cargo & Baggage</h3>
+              <div className="cargo-buttons">
+                <button
+                  type="button"
+                  onClick={() => handleCargoClick('forward')}
+                  className="cargo-button"
+                >
+                  Forward Baggage: {baggage.forward} lbs
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleCargoClick('aft')}
+                  className="cargo-button"
+                >
+                  Aft Baggage: {baggage.aft} lbs
+                </button>
+              </div>
+            </div>
+          </div>
 
           {calculations && (
             <div className="calculations-section">
