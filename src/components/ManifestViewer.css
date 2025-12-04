@@ -464,3 +464,60 @@
     justify-content: center;
   }
 }
+
+@media (max-width: 480px) {
+  .manifest-document {
+    padding: 16px;
+  }
+
+  .viewer-actions {
+    padding: 16px;
+  }
+
+  .company-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .header-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .status-indicator {
+    font-size: 0.75rem;
+    padding: 8px 12px;
+  }
+
+  .manifest-info-grid {
+    gap: 12px;
+  }
+
+  .info-item-label {
+    font-size: 0.75rem;
+  }
+
+  .info-item-value {
+    font-size: 0.875rem;
+  }
+
+  .section-title {
+    font-size: 1rem;
+  }
+
+  .calculation-table,
+  .passengers-table {
+    font-size: 0.75rem;
+  }
+
+  .calculation-table th,
+  .calculation-table td,
+  .passengers-table th,
+  .passengers-table td {
+    padding: 6px;
+  }
+
+  .btn-back,
+  .btn-print {
+    font-size: 0.875rem;
+    padding: 10px 16px;
+  }
+}

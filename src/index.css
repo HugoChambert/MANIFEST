@@ -54,6 +54,21 @@ button:disabled {
   #root {
     padding: 8px;
   }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  #root {
+    padding: 0;
+  }
+
+  body {
+    font-size: 14px;
+  }
 }
 
 @media print {
@@ -63,5 +78,9 @@ button:disabled {
 
   #root {
     padding: 0;
+  }
+
+  .no-print {
+    display: none !important;
   }
 }

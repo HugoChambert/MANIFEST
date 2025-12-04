@@ -1,6 +1,6 @@
-# Southern Airways Flight Manifest & Weight Balance System
+# MANIFEST - Flight Manifest & Weight Balance System
 
-A professional, production-ready flight manifest and weight & balance calculation system designed specifically for Southern Airways aircraft operations.
+A professional, production-ready flight manifest and weight & balance calculation system for aircraft operations.
 
 ## Features
 
@@ -54,7 +54,7 @@ A professional, production-ready flight manifest and weight & balance calculatio
 
 ## Aircraft Fleet
 
-The system comes pre-loaded with Southern Airways aircraft:
+The system comes pre-loaded with sample aircraft:
 
 1. **Cessna 208 Caravan** (N208SA)
    - Max Gross Weight: 8,750 lbs
@@ -157,8 +157,8 @@ npm run preview
 
 ## Support
 
-For questions or issues with the flight manifest system, contact Southern Airways Flight Operations.
+For questions or issues with the flight manifest system, contact your flight operations team.
 
 ---
 
-**Note**: This system is for operational use by authorized Southern Airways personnel only. All weight and balance calculations should be verified by qualified pilots before flight.
+**Note**: This system is for operational use by authorized personnel only. All weight and balance calculations should be verified by qualified pilots before flight.

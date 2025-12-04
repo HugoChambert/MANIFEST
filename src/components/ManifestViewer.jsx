@@ -93,7 +93,7 @@ function ManifestViewer({ manifestId, onClose }) {
       <div className="manifest-document">
         <div className="manifest-header-section">
           <div className="company-header">
-            <h1>SOUTHERN AIRWAYS</h1>
+            <h1>MANIFEST</h1>
             <p className="header-subtitle">Flight Manifest & Weight Balance</p>
           </div>
           <div className="manifest-status-header">

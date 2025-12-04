@@ -545,3 +545,48 @@
     max-width: none;
   }
 }
+
+@media (max-width: 480px) {
+  .form-header-new {
+    padding: 16px;
+  }
+
+  .form-header-new h2 {
+    font-size: 1.125rem;
+  }
+
+  .form-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .manifest-form-grid {
+    padding: 12px;
+  }
+
+  .sidebar-section,
+  .seating-section {
+    padding: 16px;
+  }
+
+  .sidebar-section h3,
+  .seating-section h3 {
+    font-size: 0.875rem;
+  }
+
+  .btn-save-header,
+  .btn-cancel-header {
+    padding: 10px 16px;
+    font-size: 0.75rem;
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    font-size: 0.875rem;
+    padding: 10px 12px;
+  }
+
+  .cargo-buttons {
+    flex-direction: column;
+  }
+}
