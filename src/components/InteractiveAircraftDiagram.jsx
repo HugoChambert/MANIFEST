@@ -86,168 +86,156 @@ function InteractiveAircraftDiagram({ aircraft, passengers, onSeatClick, onCargo
 
   const renderAircraftSVG = () => {
     const commonProps = {
-      fuselage: { fill: '#e8edf2', stroke: '#8b95a3', strokeWidth: 2 },
-      windows: { fill: '#5a95c7', stroke: '#3d5e7a', strokeWidth: 1 },
-      wing: { fill: '#cbd5e1', stroke: '#8b95a3', strokeWidth: 2 },
-      engine: { fill: '#94a3b8', stroke: '#64748b', strokeWidth: 2 },
-      propeller: { fill: '#475569', stroke: '#334155', strokeWidth: 1 },
+      fuselage: { fill: '#dde4ed', stroke: '#6b7a8f', strokeWidth: 2.5 },
+      cockpit: { fill: '#4a6b8a', stroke: '#2d4a5f', strokeWidth: 2 },
+      wing: { fill: '#b8c5d6', stroke: '#6b7a8f', strokeWidth: 2.5 },
+      engine: { fill: '#8895a8', stroke: '#5a6b7d', strokeWidth: 2 },
+      propeller: { fill: 'none', stroke: '#3d4a5a', strokeWidth: 2 },
+      strut: { fill: '#9aa8ba', stroke: '#6b7a8f', strokeWidth: 1.5 },
+      tail: { fill: '#b8c5d6', stroke: '#6b7a8f', strokeWidth: 2.5 },
     };
 
     switch(aircraftType) {
       case 'cessna208':
         return (
-          <svg viewBox="0 0 600 400" className="aircraft-svg" style={{width: '100%', maxWidth: '600px'}}>
-            <g id="cessna208">
-              <ellipse cx="90" cy="200" rx="35" ry="45" {...commonProps.fuselage}/>
-              <rect x="115" y="155" width="360" height="90" rx="15" {...commonProps.fuselage}/>
-              <path d="M 470 170 Q 500 180 510 200 Q 500 220 470 230 Z" {...commonProps.fuselage}/>
-              <path d="M 300 155 L 300 80 L 450 95 L 455 155 Z" {...commonProps.wing}/>
-              <rect x="370" y="75" width="45" height="40" rx="5" {...commonProps.engine}/>
-              <circle cx="392" cy="70" r="25" fill="none" stroke="#334155" strokeWidth="2"/>
-              <line x1="367" y1="70" x2="417" y2="70" stroke="#334155" strokeWidth="3"/>
-              <line x1="392" y1="45" x2="392" y2="95" stroke="#334155" strokeWidth="3"/>
-              <circle cx="150" cy="200" r="8" {...commonProps.windows}/>
-              <circle cx="180" cy="200" r="8" {...commonProps.windows}/>
-              <circle cx="220" cy="200" r="10" {...commonProps.windows}/>
-              <circle cx="260" cy="200" r="10" {...commonProps.windows}/>
-              <circle cx="300" cy="200" r="10" {...commonProps.windows}/>
-              <circle cx="340" cy="200" r="10" {...commonProps.windows}/>
-              <circle cx="380" cy="200" r="10" {...commonProps.windows}/>
-              <circle cx="420" cy="200" r="10" {...commonProps.windows}/>
-              <path d="M 510 160 L 535 120 L 540 200 L 535 280 L 510 240 Z" {...commonProps.fuselage}/>
-              <path d="M 525 200 L 545 200 L 545 240 L 530 235 Z" {...commonProps.fuselage}/>
-              <ellipse cx="160" cy="260" rx="12" ry="18" fill="#475569" stroke="#334155" strokeWidth="2"/>
-              <ellipse cx="450" cy="260" rx="12" ry="18" fill="#475569" stroke="#334155" strokeWidth="2"/>
+          <svg viewBox="0 0 700 500" className="aircraft-svg" style={{width: '100%', maxWidth: '700px'}}>
+            <defs>
+              <linearGradient id="fuselageGrad208" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#e8edf4" />
+                <stop offset="100%" stopColor="#c8d3e0" />
+              </linearGradient>
+            </defs>
+            <g id="cessna208-top">
+              <path d="M 250 240 Q 250 235 252 232 L 255 225 L 265 220 L 280 218 L 350 218 Q 355 218 355 223 L 355 277 Q 355 282 350 282 L 280 282 L 265 280 L 255 275 L 252 268 Q 250 265 250 260 Z" fill="url(#fuselageGrad208)" {...commonProps.fuselage}/>
+              <path d="M 355 235 L 550 235 Q 555 235 555 240 L 555 260 Q 555 265 550 265 L 355 265 Z" fill="url(#fuselageGrad208)" {...commonProps.fuselage}/>
+              <ellipse cx="560" cy="250" rx="8" ry="15" fill="#c8d3e0" stroke="#6b7a8f" strokeWidth="2"/>
+              <path d="M 240 130 Q 245 125 250 125 L 450 125 Q 460 125 465 130 L 475 145 Q 478 150 478 155 L 478 345 Q 478 350 475 355 L 465 370 Q 460 375 450 375 L 250 375 Q 245 375 240 370 Z" {...commonProps.wing}/>
+              <rect x="340" y="115" width="45" height="30" rx="4" {...commonProps.engine}/>
+              <ellipse cx="362" cy="115" rx="18" ry="18" {...commonProps.propeller}/>
+              <line x1="344" y1="115" x2="380" y2="115" stroke="#3d4a5a" strokeWidth="2.5"/>
+              <line x1="362" y1="97" x2="362" y2="133" stroke="#3d4a5a" strokeWidth="2.5"/>
+              <rect x="275" y="155" width="10" height="85" rx="2" {...commonProps.strut}/>
+              <rect x="430" y="155" width="10" height="85" rx="2" {...commonProps.strut}/>
+              <rect x="265" y="223" width="15" height="8" fill="#4a6b8a" stroke="#2d4a5f" strokeWidth="1"/>
+              <rect x="265" cy="269" width="15" height="8" fill="#4a6b8a" stroke="#2d4a5f" strokeWidth="1"/>
+              <path d="M 555 180 L 580 155 Q 582 153 584 153 L 592 153 Q 595 153 595 156 L 595 344 Q 595 347 592 347 L 584 347 Q 582 347 580 345 L 555 320 Z" {...commonProps.tail}/>
+              <path d="M 585 235 L 615 235 L 618 240 L 618 260 L 615 265 L 585 265 Z" {...commonProps.tail}/>
             </g>
           </svg>
         );
 
       case 'kingair350':
         return (
-          <svg viewBox="0 0 600 400" className="aircraft-svg" style={{width: '100%', maxWidth: '600px'}}>
-            <g id="kingair350">
-              <ellipse cx="90" cy="200" rx="35" ry="45" {...commonProps.fuselage}/>
-              <rect x="115" y="155" width="370" height="90" rx="15" {...commonProps.fuselage}/>
-              <path d="M 480 170 Q 510 180 520 200 Q 510 220 480 230 Z" {...commonProps.fuselage}/>
-              <path d="M 150 245 L 120 290 L 440 290 L 410 245 Z" {...commonProps.wing}/>
-              <rect x="170" y="280" width="50" height="55" rx="8" {...commonProps.engine}/>
-              <rect x="350" y="280" width="50" height="55" rx="8" {...commonProps.engine}/>
-              <circle cx="195" cy="340" r="28" fill="none" stroke="#334155" strokeWidth="2"/>
-              <line x1="167" y1="340" x2="223" y2="340" stroke="#334155" strokeWidth="3"/>
-              <line x1="195" y1="312" x2="195" y2="368" stroke="#334155" strokeWidth="3"/>
-              <circle cx="375" cy="340" r="28" fill="none" stroke="#334155" strokeWidth="2"/>
-              <line x1="347" y1="340" x2="403" y2="340" stroke="#334155" strokeWidth="3"/>
-              <line x1="375" y1="312" x2="375" y2="368" stroke="#334155" strokeWidth="3"/>
-              <circle cx="145" cy="200" r="8" {...commonProps.windows}/>
-              <circle cx="175" cy="200" r="8" {...commonProps.windows}/>
-              <circle cx="215" cy="200" r="10" {...commonProps.windows}/>
-              <circle cx="255" cy="200" r="10" {...commonProps.windows}/>
-              <circle cx="295" cy="200" r="10" {...commonProps.windows}/>
-              <circle cx="335" cy="200" r="10" {...commonProps.windows}/>
-              <circle cx="375" cy="200" r="10" {...commonProps.windows}/>
-              <circle cx="415" cy="200" r="10" {...commonProps.windows}/>
-              <circle cx="445" cy="200" r="10" {...commonProps.windows}/>
-              <path d="M 520 155 L 545 110 L 550 200 L 545 290 L 520 245 Z" {...commonProps.fuselage}/>
-              <path d="M 535 200 L 555 200 L 555 240 L 540 235 Z" {...commonProps.fuselage}/>
-              <ellipse cx="160" cy="255" rx="12" ry="18" fill="#475569" stroke="#334155" strokeWidth="2"/>
-              <ellipse cx="300" cy="255" rx="12" ry="18" fill="#475569" stroke="#334155" strokeWidth="2"/>
-              <ellipse cx="460" cy="255" rx="12" ry="18" fill="#475569" stroke="#334155" strokeWidth="2"/>
+          <svg viewBox="0 0 700 500" className="aircraft-svg" style={{width: '100%', maxWidth: '700px'}}>
+            <defs>
+              <linearGradient id="fuselageGradKA" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#e8edf4" />
+                <stop offset="100%" stopColor="#c8d3e0" />
+              </linearGradient>
+            </defs>
+            <g id="kingair350-top">
+              <ellipse cx="240" cy="250" rx="18" ry="25" fill="url(#fuselageGradKA)" {...commonProps.fuselage}/>
+              <rect x="250" y="230" width="310" height="40" rx="5" fill="url(#fuselageGradKA)" {...commonProps.fuselage}/>
+              <path d="M 560 235 Q 575 240 580 250 Q 575 260 560 265 Z" fill="url(#fuselageGradKA)" {...commonProps.fuselage}/>
+              <rect x="255" y="233" width="20" height="10" {...commonProps.cockpit}/>
+              <rect x="255" y="257" width="20" height="10" {...commonProps.cockpit}/>
+              <path d="M 270 115 L 520 115 Q 528 115 532 120 L 540 135 Q 542 140 542 145 L 542 355 Q 542 360 540 365 L 532 380 Q 528 385 520 385 L 270 385 Q 262 385 258 380 Z" {...commonProps.wing}/>
+              <rect x="300" y="105" width="55" height="35" rx="6" {...commonProps.engine}/>
+              <rect x="450" y="105" width="55" height="35" rx="6" {...commonProps.engine}/>
+              <ellipse cx="327" cy="105" rx="22" ry="22" {...commonProps.propeller}/>
+              <line x1="305" y1="105" x2="349" y2="105" stroke="#3d4a5a" strokeWidth="3"/>
+              <line x1="327" y1="83" x2="327" y2="127" stroke="#3d4a5a" strokeWidth="3"/>
+              <ellipse cx="477" cy="105" rx="22" ry="22" {...commonProps.propeller}/>
+              <line x1="455" y1="105" x2="499" y2="105" stroke="#3d4a5a" strokeWidth="3"/>
+              <line x1="477" y1="83" x2="477" y2="127" stroke="#3d4a5a" strokeWidth="3"/>
+              <path d="M 580 175 L 610 145 Q 612 143 615 143 L 625 143 Q 628 143 628 146 L 628 354 Q 628 357 625 357 L 615 357 Q 612 357 610 355 L 580 325 Z" {...commonProps.tail}/>
+              <path d="M 612 235 L 645 235 L 648 240 L 648 260 L 645 265 L 612 265 Z" {...commonProps.tail}/>
             </g>
           </svg>
         );
 
       case 'cessna402':
         return (
-          <svg viewBox="0 0 600 400" className="aircraft-svg" style={{width: '100%', maxWidth: '600px'}}>
-            <g id="cessna402">
-              <ellipse cx="90" cy="200" rx="32" ry="42" {...commonProps.fuselage}/>
-              <rect x="115" y="158" width="340" height="84" rx="12" {...commonProps.fuselage}/>
-              <path d="M 450 170 Q 480 180 490 200 Q 480 220 450 230 Z" {...commonProps.fuselage}/>
-              <path d="M 150 242 L 130 280 L 420 280 L 400 242 Z" {...commonProps.wing}/>
-              <rect x="165" y="270" width="45" height="50" rx="7" {...commonProps.engine}/>
-              <rect x="345" y="270" width="45" height="50" rx="7" {...commonProps.engine}/>
-              <circle cx="187" cy="325" r="25" fill="none" stroke="#334155" strokeWidth="2"/>
-              <line x1="162" y1="325" x2="212" y2="325" stroke="#334155" strokeWidth="3"/>
-              <line x1="187" y1="300" x2="187" y2="350" stroke="#334155" strokeWidth="3"/>
-              <circle cx="367" cy="325" r="25" fill="none" stroke="#334155" strokeWidth="2"/>
-              <line x1="342" y1="325" x2="392" y2="325" stroke="#334155" strokeWidth="3"/>
-              <line x1="367" y1="300" x2="367" y2="350" stroke="#334155" strokeWidth="3"/>
-              <circle cx="145" cy="200" r="8" {...commonProps.windows}/>
-              <circle cx="175" cy="200" r="8" {...commonProps.windows}/>
-              <circle cx="215" cy="200" r="9" {...commonProps.windows}/>
-              <circle cx="255" cy="200" r="9" {...commonProps.windows}/>
-              <circle cx="295" cy="200" r="9" {...commonProps.windows}/>
-              <circle cx="335" cy="200" r="9" {...commonProps.windows}/>
-              <circle cx="375" cy="200" r="9" {...commonProps.windows}/>
-              <circle cx="410" cy="200" r="9" {...commonProps.windows}/>
-              <path d="M 490 160 L 515 120 L 520 200 L 515 280 L 490 240 Z" {...commonProps.fuselage}/>
-              <path d="M 505 200 L 525 200 L 525 235 L 512 232 Z" {...commonProps.fuselage}/>
-              <ellipse cx="155" cy="253" rx="11" ry="17" fill="#475569" stroke="#334155" strokeWidth="2"/>
-              <ellipse cx="280" cy="253" rx="11" ry="17" fill="#475569" stroke="#334155" strokeWidth="2"/>
-              <ellipse cx="440" cy="253" rx="11" ry="17" fill="#475569" stroke="#334155" strokeWidth="2"/>
+          <svg viewBox="0 0 700 500" className="aircraft-svg" style={{width: '100%', maxWidth: '700px'}}>
+            <defs>
+              <linearGradient id="fuselageGrad402" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#e8edf4" />
+                <stop offset="100%" stopColor="#c8d3e0" />
+              </linearGradient>
+            </defs>
+            <g id="cessna402-top">
+              <ellipse cx="245" cy="250" rx="16" ry="22" fill="url(#fuselageGrad402)" {...commonProps.fuselage}/>
+              <rect x="255" y="232" width="290" height="36" rx="4" fill="url(#fuselageGrad402)" {...commonProps.fuselage}/>
+              <path d="M 545 237 Q 560 242 565 250 Q 560 258 545 263 Z" fill="url(#fuselageGrad402)" {...commonProps.fuselage}/>
+              <rect x="260" y="235" width="18" height="8" {...commonProps.cockpit}/>
+              <rect x="260" y="257" width="18" height="8" {...commonProps.cockpit}/>
+              <path d="M 275 125 L 510 125 Q 518 125 522 130 L 530 142 Q 532 147 532 152 L 532 348 Q 532 353 530 358 L 522 370 Q 518 375 510 375 L 275 375 Q 268 375 264 370 Z" {...commonProps.wing}/>
+              <rect x="305" y="115" width="50" height="32" rx="5" {...commonProps.engine}/>
+              <rect x="445" y="115" width="50" height="32" rx="5" {...commonProps.engine}/>
+              <ellipse cx="330" cy="115" rx="20" ry="20" {...commonProps.propeller}/>
+              <line x1="310" y1="115" x2="350" y2="115" stroke="#3d4a5a" strokeWidth="2.5"/>
+              <line x1="330" y1="95" x2="330" y2="135" stroke="#3d4a5a" strokeWidth="2.5"/>
+              <ellipse cx="470" cy="115" rx="20" ry="20" {...commonProps.propeller}/>
+              <line x1="450" y1="115" x2="490" y2="115" stroke="#3d4a5a" strokeWidth="2.5"/>
+              <line x1="470" y1="95" x2="470" y2="135" stroke="#3d4a5a" strokeWidth="2.5"/>
+              <path d="M 565 180 L 595 150 Q 597 148 600 148 L 610 148 Q 613 148 613 151 L 613 349 Q 613 352 610 352 L 600 352 Q 597 352 595 350 L 565 320 Z" {...commonProps.tail}/>
+              <path d="M 597 237 L 628 237 L 631 242 L 631 258 L 628 263 L 597 263 Z" {...commonProps.tail}/>
             </g>
           </svg>
         );
 
       case 'chieftain':
         return (
-          <svg viewBox="0 0 600 400" className="aircraft-svg" style={{width: '100%', maxWidth: '600px'}}>
-            <g id="chieftain">
-              <ellipse cx="90" cy="200" rx="33" ry="43" {...commonProps.fuselage}/>
-              <rect x="115" y="157" width="345" height="86" rx="13" {...commonProps.fuselage}/>
-              <path d="M 455 168 Q 485 178 495 200 Q 485 222 455 232 Z" {...commonProps.fuselage}/>
-              <path d="M 150 243 L 125 285 L 425 285 L 405 243 Z" {...commonProps.wing}/>
-              <rect x="160" y="272" width="47" height="52" rx="7" {...commonProps.engine}/>
-              <rect x="350" y="272" width="47" height="52" rx="7" {...commonProps.engine}/>
-              <circle cx="183" cy="328" r="26" fill="none" stroke="#334155" strokeWidth="2"/>
-              <line x1="157" y1="328" x2="209" y2="328" stroke="#334155" strokeWidth="3"/>
-              <line x1="183" y1="302" x2="183" y2="354" stroke="#334155" strokeWidth="3"/>
-              <circle cx="373" cy="328" r="26" fill="none" stroke="#334155" strokeWidth="2"/>
-              <line x1="347" y1="328" x2="399" y2="328" stroke="#334155" strokeWidth="3"/>
-              <line x1="373" y1="302" x2="373" y2="354" stroke="#334155" strokeWidth="3"/>
-              <circle cx="145" cy="200" r="8" {...commonProps.windows}/>
-              <circle cx="175" cy="200" r="8" {...commonProps.windows}/>
-              <circle cx="215" cy="200" r="9" {...commonProps.windows}/>
-              <circle cx="255" cy="200" r="9" {...commonProps.windows}/>
-              <circle cx="295" cy="200" r="9" {...commonProps.windows}/>
-              <circle cx="335" cy="200" r="9" {...commonProps.windows}/>
-              <circle cx="375" cy="200" r="9" {...commonProps.windows}/>
-              <circle cx="415" cy="200" r="9" {...commonProps.windows}/>
-              <path d="M 495 158 L 520 115 L 525 200 L 520 285 L 495 242 Z" {...commonProps.fuselage}/>
-              <path d="M 510 200 L 530 200 L 530 237 L 515 234 Z" {...commonProps.fuselage}/>
-              <ellipse cx="155" cy="254" rx="11" ry="17" fill="#475569" stroke="#334155" strokeWidth="2"/>
-              <ellipse cx="280" cy="254" rx="11" ry="17" fill="#475569" stroke="#334155" strokeWidth="2"/>
-              <ellipse cx="445" cy="254" rx="11" ry="17" fill="#475569" stroke="#334155" strokeWidth="2"/>
+          <svg viewBox="0 0 700 500" className="aircraft-svg" style={{width: '100%', maxWidth: '700px'}}>
+            <defs>
+              <linearGradient id="fuselageGradChief" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#e8edf4" />
+                <stop offset="100%" stopColor="#c8d3e0" />
+              </linearGradient>
+            </defs>
+            <g id="chieftain-top">
+              <ellipse cx="245" cy="250" rx="16" ry="23" fill="url(#fuselageGradChief)" {...commonProps.fuselage}/>
+              <rect x="255" y="231" width="295" height="38" rx="4" fill="url(#fuselageGradChief)" {...commonProps.fuselage}/>
+              <path d="M 550 236 Q 565 241 570 250 Q 565 259 550 264 Z" fill="url(#fuselageGradChief)" {...commonProps.fuselage}/>
+              <rect x="260" y="234" width="18" height="9" {...commonProps.cockpit}/>
+              <rect x="260" y="257" width="18" height="9" {...commonProps.cockpit}/>
+              <path d="M 275 122 L 515 122 Q 523 122 527 127 L 535 140 Q 537 145 537 150 L 537 350 Q 537 355 535 360 L 527 373 Q 523 378 515 378 L 275 378 Q 268 378 264 373 Z" {...commonProps.wing}/>
+              <rect x="305" y="112" width="52" height="33" rx="5" {...commonProps.engine}/>
+              <rect x="448" y="112" width="52" height="33" rx="5" {...commonProps.engine}/>
+              <ellipse cx="331" cy="112" rx="21" ry="21" {...commonProps.propeller}/>
+              <line x1="310" y1="112" x2="352" y2="112" stroke="#3d4a5a" strokeWidth="2.5"/>
+              <line x1="331" y1="91" x2="331" y2="133" stroke="#3d4a5a" strokeWidth="2.5"/>
+              <ellipse cx="474" cy="112" rx="21" ry="21" {...commonProps.propeller}/>
+              <line x1="453" y1="112" x2="495" y2="112" stroke="#3d4a5a" strokeWidth="2.5"/>
+              <line x1="474" y1="91" x2="474" y2="133" stroke="#3d4a5a" strokeWidth="2.5"/>
+              <path d="M 570 178 L 600 148 Q 602 146 605 146 L 615 146 Q 618 146 618 149 L 618 351 Q 618 354 615 354 L 605 354 Q 602 354 600 352 L 570 322 Z" {...commonProps.tail}/>
+              <path d="M 602 236 L 633 236 L 636 241 L 636 259 L 633 264 L 602 264 Z" {...commonProps.tail}/>
             </g>
           </svg>
         );
 
       case 'pc12':
         return (
-          <svg viewBox="0 0 600 400" className="aircraft-svg" style={{width: '100%', maxWidth: '600px'}}>
-            <g id="pc12">
-              <ellipse cx="90" cy="200" rx="36" ry="46" {...commonProps.fuselage}/>
-              <rect x="115" y="154" width="365" height="92" rx="16" {...commonProps.fuselage}/>
-              <path d="M 475 168 Q 505 178 515 200 Q 505 222 475 232 Z" {...commonProps.fuselage}/>
-              <path d="M 150 246 L 125 295 L 435 295 L 415 246 Z" {...commonProps.wing}/>
-              <rect x="265" y="285" width="50" height="58" rx="8" {...commonProps.engine}/>
-              <circle cx="290" cy="348" r="30" fill="none" stroke="#334155" strokeWidth="2"/>
-              <line x1="260" y1="348" x2="320" y2="348" stroke="#334155" strokeWidth="3"/>
-              <line x1="290" y1="318" x2="290" y2="378" stroke="#334155" strokeWidth="3"/>
-              <circle cx="148" cy="200" r="9" {...commonProps.windows}/>
-              <circle cx="178" cy="200" r="9" {...commonProps.windows}/>
-              <circle cx="218" cy="200" r="10" {...commonProps.windows}/>
-              <circle cx="258" cy="200" r="10" {...commonProps.windows}/>
-              <circle cx="298" cy="200" r="10" {...commonProps.windows}/>
-              <circle cx="338" cy="200" r="10" {...commonProps.windows}/>
-              <circle cx="378" cy="200" r="10" {...commonProps.windows}/>
-              <circle cx="418" cy="200" r="10" {...commonProps.windows}/>
-              <circle cx="448" cy="200" r="10" {...commonProps.windows}/>
-              <path d="M 515 153 L 540 105 L 545 200 L 540 295 L 515 247 Z" {...commonProps.fuselage}/>
-              <path d="M 530 200 L 550 200 L 550 242 L 535 238 Z" {...commonProps.fuselage}/>
-              <ellipse cx="160" cy="256" rx="12" ry="18" fill="#475569" stroke="#334155" strokeWidth="2"/>
-              <ellipse cx="290" cy="256" rx="12" ry="18" fill="#475569" stroke="#334155" strokeWidth="2"/>
-              <ellipse cx="455" cy="256" rx="12" ry="18" fill="#475569" stroke="#334155" strokeWidth="2"/>
+          <svg viewBox="0 0 700 500" className="aircraft-svg" style={{width: '100%', maxWidth: '700px'}}>
+            <defs>
+              <linearGradient id="fuselageGradPC12" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#e8edf4" />
+                <stop offset="100%" stopColor="#c8d3e0" />
+              </linearGradient>
+            </defs>
+            <g id="pc12-top">
+              <ellipse cx="240" cy="250" rx="18" ry="26" fill="url(#fuselageGradPC12)" {...commonProps.fuselage}/>
+              <rect x="250" y="229" width="320" height="42" rx="5" fill="url(#fuselageGradPC12)" {...commonProps.fuselage}/>
+              <path d="M 570 234 Q 585 239 590 250 Q 585 261 570 266 Z" fill="url(#fuselageGradPC12)" {...commonProps.fuselage}/>
+              <rect x="255" y="232" width="20" height="10" {...commonProps.cockpit}/>
+              <rect x="255" y="258" width="20" height="10" {...commonProps.cockpit}/>
+              <path d="M 270 110 L 530 110 Q 538 110 542 115 L 550 130 Q 552 135 552 140 L 552 360 Q 552 365 550 370 L 542 385 Q 538 390 530 390 L 270 390 Q 262 390 258 385 Z" {...commonProps.wing}/>
+              <rect x="380" y="100" width="58" height="36" rx="6" {...commonProps.engine}/>
+              <ellipse cx="409" cy="100" rx="24" ry="24" {...commonProps.propeller}/>
+              <line x1="385" y1="100" x2="433" y2="100" stroke="#3d4a5a" strokeWidth="3"/>
+              <line x1="409" y1="76" x2="409" y2="124" stroke="#3d4a5a" strokeWidth="3"/>
+              <path d="M 590 170 L 620 140 Q 622 138 625 138 L 635 138 Q 638 138 638 141 L 638 359 Q 638 362 635 362 L 625 362 Q 622 362 620 360 L 590 330 Z" {...commonProps.tail}/>
+              <path d="M 622 234 L 655 234 L 658 239 L 658 261 L 655 266 L 622 266 Z" {...commonProps.tail}/>
             </g>
           </svg>
         );
