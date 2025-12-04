@@ -1,0 +1,231 @@
+.weight-balance-display {
+  margin-top: 32px;
+  padding: 24px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.summary-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.summary-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.summary-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.summary-value.danger {
+  color: #dc2626;
+}
+
+.summary-detail {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.summary-margin {
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.summary-margin.positive {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.summary-margin.negative {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.cg-indicator {
+  margin-top: 16px;
+}
+
+.cg-bar {
+  position: relative;
+  height: 60px;
+  background: linear-gradient(to right, #fecaca 0%, #fef3c7 25%, #d1fae5 50%, #fef3c7 75%, #fecaca 100%);
+  border-radius: 8px;
+  border: 2px solid #e5e7eb;
+  padding: 8px;
+}
+
+.cg-limits {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.cg-limit-marker {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cg-position {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: left 0.3s ease;
+}
+
+.cg-dot {
+  width: 20px;
+  height: 20px;
+  background: #2563eb;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.5);
+}
+
+.cg-position.out-of-limits .cg-dot {
+  background: #dc2626;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.5);
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.cg-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #1f2937;
+  background: #ffffff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #e5e7eb;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.airworthiness-status {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.airworthiness-status.safe {
+  background: #d1fae5;
+  border: 2px solid #059669;
+}
+
+.airworthiness-status.unsafe {
+  background: #fee2e2;
+  border: 2px solid #dc2626;
+}
+
+.status-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.airworthiness-status.safe .status-icon {
+  background: #059669;
+  color: #ffffff;
+}
+
+.airworthiness-status.unsafe .status-icon {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.status-text strong {
+  display: block;
+  font-size: 1.25rem;
+  margin-bottom: 4px;
+}
+
+.airworthiness-status.safe .status-text strong {
+  color: #065f46;
+}
+
+.airworthiness-status.unsafe .status-text strong {
+  color: #991b1b;
+}
+
+.status-text p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.airworthiness-status.safe .status-text p {
+  color: #047857;
+}
+
+.airworthiness-status.unsafe .status-text p {
+  color: #b91c1c;
+}
+
+@media (max-width: 768px) {
+  .weight-balance-display {
+    padding: 16px;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-value {
+    font-size: 1.5rem;
+  }
+
+  .airworthiness-status {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .status-text strong {
+    font-size: 1.125rem;
+  }
+}

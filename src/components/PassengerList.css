@@ -1,0 +1,148 @@
+.passenger-section {
+  background: #f9fafb;
+  padding: 24px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.passenger-add-form {
+  margin-bottom: 24px;
+}
+
+.btn-add {
+  padding: 10px 20px;
+  background: #059669;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.btn-add:hover:not(:disabled) {
+  background: #047857;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+.btn-add:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.passenger-list {
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
+.passenger-list-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 120px;
+  gap: 16px;
+  padding: 12px 16px;
+  background: #f3f4f6;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.passenger-list-item {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 120px;
+  gap: 16px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  align-items: center;
+  transition: background 0.15s;
+}
+
+.passenger-list-item:hover {
+  background: #f9fafb;
+}
+
+.passenger-list-item:last-child {
+  border-bottom: none;
+}
+
+.passenger-list-item span {
+  font-size: 0.875rem;
+  color: #1f2937;
+}
+
+.btn-remove {
+  padding: 6px 14px;
+  background: #ef4444;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-remove:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+.passenger-list-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: #f9fafb;
+  font-weight: 600;
+  color: #1f2937;
+  border-top: 2px solid #e5e7eb;
+}
+
+.empty-state {
+  padding: 40px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+@media (max-width: 768px) {
+  .passenger-list-header,
+  .passenger-list-item {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .passenger-list-header {
+    display: none;
+  }
+
+  .passenger-list-item span {
+    padding: 4px 0;
+  }
+
+  .passenger-list-item span:before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #6b7280;
+    font-size: 0.75rem;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .btn-remove {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .passenger-list-footer {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
