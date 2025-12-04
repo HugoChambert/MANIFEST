@@ -38,7 +38,7 @@
 }
 
 .summary-value.danger {
-  color: #c1121f;
+  color: #ef4444;
 }
 
 .summary-detail {
@@ -62,7 +62,7 @@
 
 .summary-margin.negative {
   background: #fee2e2;
-  color: #c1121f;
+  color: #ef4444;
 }
 
 .cg-indicator {
@@ -106,15 +106,15 @@
 .cg-dot {
   width: 20px;
   height: 20px;
-  background: #0d1b2a;
+  background: #3b82f6;
   border: 3px solid #ffffff;
   border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(13, 27, 42, 0.5);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.5);
 }
 
 .cg-position.out-of-limits .cg-dot {
-  background: #c1121f;
-  box-shadow: 0 2px 8px rgba(193, 18, 31, 0.5);
+  background: #ef4444;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5);
   animation: pulse 1s infinite;
 }
 
@@ -155,7 +155,7 @@
 
 .airworthiness-status.unsafe {
   background: #fee2e2;
-  border: 2px solid #c1121f;
+  border: 2px solid #ef4444;
 }
 
 .status-icon {
@@ -176,7 +176,7 @@
 }
 
 .airworthiness-status.unsafe .status-icon {
-  background: #c1121f;
+  background: #ef4444;
   color: #ffffff;
 }
 
@@ -191,7 +191,7 @@
 }
 
 .airworthiness-status.unsafe .status-text strong {
-  color: #c1121f;
+  color: #ef4444;
 }
 
 .status-text p {
@@ -204,7 +204,7 @@
 }
 
 .airworthiness-status.unsafe .status-text p {
-  color: #c1121f;
+  color: #ef4444;
 }
 
 @media (max-width: 768px) {

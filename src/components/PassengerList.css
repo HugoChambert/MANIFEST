@@ -11,7 +11,7 @@
 
 .btn-add {
   padding: 10px 20px;
-  background: #0d1b2a;
+  background: #3b82f6;
   color: #ffffff;
   border: none;
   border-radius: 6px;
@@ -19,13 +19,13 @@
   font-weight: 600;
   transition: all 0.2s;
   width: 100%;
-  box-shadow: 0 2px 4px rgba(13, 27, 42, 0.2);
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
 }
 
 .btn-add:hover:not(:disabled) {
-  background: #1b263b;
+  background: #2563eb;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(13, 27, 42, 0.3);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .btn-add:disabled {
@@ -78,7 +78,7 @@
 
 .btn-remove {
   padding: 6px 14px;
-  background: #c1121f;
+  background: #64748b;
   color: #ffffff;
   border: none;
   border-radius: 4px;
@@ -88,9 +88,9 @@
 }
 
 .btn-remove:hover {
-  background: #a00f1a;
+  background: #475569;
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(193, 18, 31, 0.3);
+  box-shadow: 0 2px 8px rgba(71, 85, 105, 0.3);
 }
 
 .passenger-list-footer {

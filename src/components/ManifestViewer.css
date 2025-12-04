@@ -26,26 +26,26 @@
 
 .btn-back {
   background: #e2e8f0;
-  color: #0d1b2a;
-  border: 2px solid #0d1b2a;
+  color: #64748b;
+  border: 2px solid #64748b;
 }
 
 .btn-back:hover {
-  background: #0d1b2a;
+  background: #64748b;
   color: #ffffff;
   transform: translateY(-1px);
 }
 
 .btn-print {
-  background: #c1121f;
+  background: #3b82f6;
   color: #ffffff;
-  box-shadow: 0 2px 4px rgba(193, 18, 31, 0.2);
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
 }
 
 .btn-print:hover {
-  background: #a00f1a;
+  background: #2563eb;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(193, 18, 31, 0.4);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
 }
 
 .manifest-document {
@@ -60,14 +60,14 @@
   justify-content: space-between;
   align-items: flex-start;
   padding-bottom: 24px;
-  border-bottom: 4px solid #c1121f;
+  border-bottom: 4px solid #3b82f6;
   margin-bottom: 32px;
 }
 
 .company-header h1 {
   font-size: 2.5rem;
   font-weight: 800;
-  color: #0d1b2a;
+  color: #1e3a8a;
   margin: 0 0 4px 0;
   letter-spacing: 1px;
 }
@@ -100,8 +100,8 @@
 
 .status-indicator.unsafe {
   background: #fee2e2;
-  color: #c1121f;
-  border: 2px solid #c1121f;
+  color: #ef4444;
+  border: 2px solid #ef4444;
 }
 
 .manifest-info-grid {
