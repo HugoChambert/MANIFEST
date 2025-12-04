@@ -1,3 +1,45 @@
+.manifest-form-wrapper {
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px 32px 24px 32px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #ffffff;
+}
+
+.form-header h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+}
+
+.form-subtitle {
+  font-size: 1rem;
+  color: #cbd5e1;
+  margin: 0;
+}
+
+.btn-cancel {
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 .manifest-form {
   padding: 32px;
 }
@@ -66,6 +108,23 @@
   cursor: not-allowed;
 }
 
+.form-control.error {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+
+.form-control.error:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.error-message {
+  font-size: 0.8125rem;
+  color: #dc2626;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
 .form-hint {
   font-size: 0.75rem;
   color: #6b7280;
@@ -110,6 +169,7 @@
   margin-top: 32px;
   padding-top: 24px;
   border-top: 2px solid #e5e7eb;
+  flex-wrap: wrap;
 }
 
 .btn-primary {
@@ -136,6 +196,23 @@
 .btn-primary:disabled {
   background: #9ca3af;
   cursor: not-allowed;
+}
+
+.btn-secondary {
+  padding: 12px 32px;
+  background: transparent;
+  color: #64748b;
+  border: 2px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #334155;
 }
 
 .save-message {

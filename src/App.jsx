@@ -1,11 +1,17 @@
 import { useState, useEffect } from 'react';
 import { supabase } from './supabaseClient';
+import Dashboard from './components/Dashboard';
 import FlightManifestForm from './components/FlightManifestForm';
+import ManifestViewer from './components/ManifestViewer';
+import Toast from './components/Toast';
 import './App.css';
 
 function App() {
   const [aircraft, setAircraft] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentView, setCurrentView] = useState('dashboard');
+  const [selectedManifestId, setSelectedManifestId] = useState(null);
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
     fetchAircraft();
@@ -22,8 +28,37 @@ function App() {
       setAircraft(data || []);
     } catch (error) {
       console.error('Error fetching aircraft:', error.message);
+      showToast('error', 'Failed to load aircraft data');
     } finally {
       setLoading(false);
+    }
+  }
+
+  function showToast(type, message) {
+    setToast({ type, message });
+  }
+
+  function handleCreateNew() {
+    setCurrentView('create');
+    setSelectedManifestId(null);
+  }
+
+  function handleViewManifest(manifestId) {
+    setSelectedManifestId(manifestId);
+    setCurrentView('view');
+  }
+
+  function handleBackToDashboard() {
+    setCurrentView('dashboard');
+    setSelectedManifestId(null);
+  }
+
+  function handleSaveSuccess(result) {
+    if (result.type === 'success') {
+      showToast('success', result.message);
+      setCurrentView('dashboard');
+    } else {
+      showToast(result.type, result.message);
     }
   }
 
@@ -40,13 +75,50 @@ function App() {
     <div className="app">
       <header className="app-header">
         <div className="header-content">
-          <h1>Southern Airways</h1>
-          <h2>Flight Manifest & Weight Balance</h2>
+          <div className="header-logo-section">
+            <h1>Southern Airways</h1>
+            <div className="header-badge">Flight Operations</div>
+          </div>
+          <h2>Flight Manifest & Weight Balance System</h2>
         </div>
       </header>
+
       <main className="app-main">
-        <FlightManifestForm aircraft={aircraft} />
+        {currentView === 'dashboard' && (
+          <Dashboard
+            onCreateNew={handleCreateNew}
+            onViewManifest={handleViewManifest}
+          />
+        )}
+
+        {currentView === 'create' && (
+          <FlightManifestForm
+            aircraft={aircraft}
+            onSaveSuccess={handleSaveSuccess}
+            onCancel={handleBackToDashboard}
+          />
+        )}
+
+        {currentView === 'view' && selectedManifestId && (
+          <ManifestViewer
+            manifestId={selectedManifestId}
+            onClose={handleBackToDashboard}
+          />
+        )}
       </main>
+
+      <footer className="app-footer">
+        <p>Southern Airways Flight Operations System &copy; {new Date().getFullYear()}</p>
+        <p className="footer-note">Compliant with FAA regulations (14 CFR § 135.63)</p>
+      </footer>
+
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 }

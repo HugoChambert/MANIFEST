@@ -1,0 +1,245 @@
+.seating-chart-container {
+  background: #f8fafc;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.seating-chart-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 20px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.seating-chart {
+  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+  border: 2px solid #cbd5e1;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 500px;
+  margin: 0 auto 16px auto;
+}
+
+.cockpit {
+  text-align: center;
+  padding: 16px;
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  border-radius: 12px 12px 0 0;
+  margin: -24px -24px 20px -24px;
+}
+
+.cockpit-icon {
+  font-size: 2rem;
+  margin-bottom: 4px;
+  filter: brightness(0) invert(1);
+}
+
+.cockpit-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cabin {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.seat-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.row-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #64748b;
+  min-width: 50px;
+  text-align: right;
+}
+
+.seats {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.seat-group {
+  display: flex;
+  gap: 8px;
+}
+
+.aisle {
+  width: 24px;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    #cbd5e1 0px,
+    #cbd5e1 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+
+.seat {
+  width: 56px;
+  height: 64px;
+  background: #e2e8f0;
+  border: 2px solid #cbd5e1;
+  border-radius: 8px 8px 4px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.2s;
+  cursor: help;
+}
+
+.seat.empty {
+  background: linear-gradient(135deg, #e2e8f0 0%, #f1f5f9 100%);
+}
+
+.seat.occupied {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border-color: #1e40af;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.seat:hover {
+  transform: scale(1.05);
+}
+
+.seat-label {
+  position: absolute;
+  top: 4px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.seat.occupied .seat-label {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.seat-occupant {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-top: 8px;
+}
+
+.occupant-initial {
+  width: 32px;
+  height: 32px;
+  background: #ffffff;
+  color: #2563eb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 700;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.occupant-weight {
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.cargo {
+  text-align: center;
+  padding: 16px;
+  background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+  border-radius: 0 0 12px 12px;
+  margin: 20px -24px -24px -24px;
+}
+
+.cargo-icon {
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+  filter: brightness(0) invert(1);
+}
+
+.cargo-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.seating-legend {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding-top: 16px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.legend-seat {
+  width: 32px;
+  height: 36px;
+  border-radius: 6px 6px 3px 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid;
+}
+
+.legend-seat.empty {
+  background: linear-gradient(135deg, #e2e8f0 0%, #f1f5f9 100%);
+  border-color: #cbd5e1;
+}
+
+.legend-seat.occupied {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border-color: #1e40af;
+}
+
+.legend-seat.occupied .occupant-initial {
+  width: 20px;
+  height: 20px;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .seating-chart {
+    padding: 16px;
+  }
+
+  .seat {
+    width: 48px;
+    height: 56px;
+  }
+
+  .occupant-initial {
+    width: 28px;
+    height: 28px;
+    font-size: 0.875rem;
+  }
+
+  .row-label {
+    min-width: 40px;
+    font-size: 0.75rem;
+  }
+}
