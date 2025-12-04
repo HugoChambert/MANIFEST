@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { calculateWeightAndBalance } from '../utils/weightBalance';
-import PassengerList from './PassengerList';
+import InteractiveAircraftDiagram from './InteractiveAircraftDiagram';
+import SeatModal from './SeatModal';
+import CargoModal from './CargoModal';
 import WarningPanel from './WarningPanel';
 import WeightBalanceDisplay from './WeightBalanceDisplay';
-import SeatingChart from './SeatingChart';
 import './FlightManifestForm.css';
 
 function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
@@ -17,25 +18,31 @@ function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
     pilotWeight: '',
     departureTime: '',
     arrivalTime: '',
-    fuelOnboard: '',
-    baggageWeight: ''
+    fuelOnboard: ''
   });
 
   const [passengers, setPassengers] = useState([]);
+  const [baggage, setBaggage] = useState({ forward: 0, aft: 0 });
   const [calculations, setCalculations] = useState(null);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
 
+  const [seatModalOpen, setSeatModalOpen] = useState(false);
+  const [selectedSeat, setSelectedSeat] = useState(null);
+  const [cargoModalOpen, setCargoModalOpen] = useState(false);
+  const [selectedCargoArea, setSelectedCargoArea] = useState(null);
+
   useEffect(() => {
-    if (selectedAircraft && formData.pilotWeight && formData.fuelOnboard !== '' && formData.baggageWeight !== '') {
+    if (selectedAircraft && formData.pilotWeight && formData.fuelOnboard !== '') {
+      const totalBaggage = baggage.forward + baggage.aft;
       const result = calculateWeightAndBalance(selectedAircraft, {
         pilotWeight: parseFloat(formData.pilotWeight) || 0,
         fuelOnboard: parseFloat(formData.fuelOnboard) || 0,
-        baggageWeight: parseFloat(formData.baggageWeight) || 0
+        baggageWeight: totalBaggage
       }, passengers);
       setCalculations(result);
     }
-  }, [selectedAircraft, formData, passengers]);
+  }, [selectedAircraft, formData, passengers, baggage]);
 
   const handleAircraftChange = (e) => {
     const aircraftId = e.target.value;
@@ -45,6 +52,8 @@ function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
     } else {
       setSelectedAircraft(null);
     }
+    setPassengers([]);
+    setBaggage({ forward: 0, aft: 0 });
     setErrors({ ...errors, aircraft: '' });
   };
 
@@ -55,6 +64,35 @@ function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
       [name]: value
     }));
     setErrors({ ...errors, [name]: '' });
+  };
+
+  const handleSeatClick = (seatNumber) => {
+    const existingPassenger = passengers.find(p => p.seat === seatNumber);
+    setSelectedSeat({ seatNumber, passenger: existingPassenger });
+    setSeatModalOpen(true);
+  };
+
+  const handleSaveSeat = (passengerData) => {
+    setPassengers(prev => {
+      const filtered = prev.filter(p => p.seat !== passengerData.seat);
+      return [...filtered, passengerData];
+    });
+  };
+
+  const handleRemoveSeat = (seatNumber) => {
+    setPassengers(prev => prev.filter(p => p.seat !== seatNumber));
+  };
+
+  const handleCargoClick = (area) => {
+    setSelectedCargoArea(area);
+    setCargoModalOpen(true);
+  };
+
+  const handleSaveCargo = (area, weight) => {
+    setBaggage(prev => ({
+      ...prev,
+      [area]: weight
+    }));
   };
 
   const validateForm = () => {
@@ -78,9 +116,6 @@ function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
     if (selectedAircraft && parseFloat(formData.fuelOnboard) > selectedAircraft.max_fuel_capacity) {
       newErrors.fuelOnboard = `Fuel exceeds maximum capacity of ${selectedAircraft.max_fuel_capacity} gallons`;
     }
-    if (formData.baggageWeight === '' || parseFloat(formData.baggageWeight) < 0) {
-      newErrors.baggageWeight = 'Valid baggage weight is required';
-    }
     if (!formData.departureTime) {
       newErrors.departureTime = 'Departure time is required';
     }
@@ -101,6 +136,7 @@ function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
     setSaving(true);
 
     try {
+      const totalBaggage = baggage.forward + baggage.aft;
       const manifestData = {
         aircraft_id: selectedAircraft.id,
         flight_number: formData.flightNumber,
@@ -112,7 +148,7 @@ function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
         arrival_time: new Date(formData.flightDate + 'T' + formData.arrivalTime).toISOString(),
         fuel_onboard: parseFloat(formData.fuelOnboard) || 0,
         total_passenger_weight: calculations ? parseFloat(calculations.totalPassengerWeight) : 0,
-        total_baggage_weight: parseFloat(formData.baggageWeight) || 0,
+        total_baggage_weight: totalBaggage,
         calculated_cg: calculations ? parseFloat(calculations.calculatedCG) : null,
         calculated_total_weight: calculations ? parseFloat(calculations.totalWeight) : null,
         is_within_limits: calculations ? calculations.isWithinLimits : false,
@@ -132,8 +168,8 @@ function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
           manifest_id: manifest.id,
           passenger_name: p.name,
           weight: p.weight,
-          seat_position: p.seatPosition,
-          row_number: p.rowNumber
+          seat_position: `Seat ${p.seat}`,
+          row_number: Math.ceil(p.seat / 4)
         }));
 
         const { error: passengersError } = await supabase
@@ -154,265 +190,214 @@ function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
   };
 
   return (
-    <div className="manifest-form-wrapper">
-      <div className="form-header">
+    <div className="manifest-form-wrapper-new">
+      <div className="form-header-new">
         <div>
           <h2>Create Flight Manifest</h2>
-          <p className="form-subtitle">Enter all flight details for weight and balance calculation</p>
+          <p className="form-subtitle">Select aircraft and click on seats or cargo areas to manage passengers and weight</p>
         </div>
-        {onCancel && (
-          <button onClick={onCancel} className="btn-cancel">
-            CANCEL
-          </button>
-        )}
-      </div>
-
-      <div className="manifest-form">
-        <div className="form-section">
-          <h3 className="section-title">Aircraft Selection</h3>
-          <div className="form-row">
-            <div className="form-group full-width">
-              <label htmlFor="aircraft">Aircraft Type & Registration *</label>
-              <select
-                id="aircraft"
-                value={selectedAircraft?.id || ''}
-                onChange={handleAircraftChange}
-                className={`form-control ${errors.aircraft ? 'error' : ''}`}
-                required
-              >
-                <option value="">Select Aircraft...</option>
-                {aircraft.map(a => (
-                  <option key={a.id} value={a.id}>
-                    {a.name} - {a.registration}
-                  </option>
-                ))}
-              </select>
-              {errors.aircraft && <span className="error-message">{errors.aircraft}</span>}
-            </div>
-          </div>
-
-          {selectedAircraft && (
-            <div className="aircraft-specs">
-              <div className="spec-item">
-                <span className="spec-label">Max Gross Weight:</span>
-                <span className="spec-value">{selectedAircraft.max_gross_weight} lbs</span>
-              </div>
-              <div className="spec-item">
-                <span className="spec-label">Max Passengers:</span>
-                <span className="spec-value">{selectedAircraft.max_passengers}</span>
-              </div>
-              <div className="spec-item">
-                <span className="spec-label">Max Fuel:</span>
-                <span className="spec-value">{selectedAircraft.max_fuel_capacity} gal</span>
-              </div>
-              <div className="spec-item">
-                <span className="spec-label">Max Baggage:</span>
-                <span className="spec-value">{selectedAircraft.max_baggage_weight} lbs</span>
-              </div>
-              <div className="spec-item">
-                <span className="spec-label">CG Limits:</span>
-                <span className="spec-value">{selectedAircraft.cg_forward_limit}" - {selectedAircraft.cg_aft_limit}"</span>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="form-section">
-          <h3 className="section-title">Flight Information</h3>
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="flightNumber">Flight Number *</label>
-              <input
-                type="text"
-                id="flightNumber"
-                name="flightNumber"
-                value={formData.flightNumber}
-                onChange={handleInputChange}
-                className={`form-control ${errors.flightNumber ? 'error' : ''}`}
-                placeholder="SA123"
-                required
-              />
-              {errors.flightNumber && <span className="error-message">{errors.flightNumber}</span>}
-            </div>
-            <div className="form-group">
-              <label htmlFor="flightDate">Flight Date *</label>
-              <input
-                type="date"
-                id="flightDate"
-                name="flightDate"
-                value={formData.flightDate}
-                onChange={handleInputChange}
-                className="form-control"
-                required
-              />
-            </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="departureTime">Departure Time (Outbound) *</label>
-              <input
-                type="time"
-                id="departureTime"
-                name="departureTime"
-                value={formData.departureTime}
-                onChange={handleInputChange}
-                className={`form-control ${errors.departureTime ? 'error' : ''}`}
-                required
-              />
-              {errors.departureTime && <span className="error-message">{errors.departureTime}</span>}
-            </div>
-            <div className="form-group">
-              <label htmlFor="arrivalTime">Arrival Time (Inbound) *</label>
-              <input
-                type="time"
-                id="arrivalTime"
-                name="arrivalTime"
-                value={formData.arrivalTime}
-                onChange={handleInputChange}
-                className={`form-control ${errors.arrivalTime ? 'error' : ''}`}
-                required
-              />
-              {errors.arrivalTime && <span className="error-message">{errors.arrivalTime}</span>}
-            </div>
-          </div>
-        </div>
-
-        <div className="form-section">
-          <h3 className="section-title">Crew Information</h3>
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="pilotInCommand">Pilot in Command (PIC) *</label>
-              <input
-                type="text"
-                id="pilotInCommand"
-                name="pilotInCommand"
-                value={formData.pilotInCommand}
-                onChange={handleInputChange}
-                className={`form-control ${errors.pilotInCommand ? 'error' : ''}`}
-                placeholder="Captain Name"
-                required
-              />
-              {errors.pilotInCommand && <span className="error-message">{errors.pilotInCommand}</span>}
-            </div>
-            <div className="form-group">
-              <label htmlFor="secondInCommand">Second in Command (SIC)</label>
-              <input
-                type="text"
-                id="secondInCommand"
-                name="secondInCommand"
-                value={formData.secondInCommand}
-                onChange={handleInputChange}
-                className="form-control"
-                placeholder="First Officer Name (if applicable)"
-              />
-            </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="pilotWeight">Total Crew Weight (lbs) *</label>
-              <input
-                type="number"
-                id="pilotWeight"
-                name="pilotWeight"
-                value={formData.pilotWeight}
-                onChange={handleInputChange}
-                className={`form-control ${errors.pilotWeight ? 'error' : ''}`}
-                placeholder="Combined weight of all crew"
-                min="0"
-                step="0.1"
-                required
-              />
-              {errors.pilotWeight && <span className="error-message">{errors.pilotWeight}</span>}
-            </div>
-          </div>
-        </div>
-
-        <div className="form-section">
-          <h3 className="section-title">Fuel & Baggage</h3>
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="fuelOnboard">Fuel Onboard (gallons) *</label>
-              <input
-                type="number"
-                id="fuelOnboard"
-                name="fuelOnboard"
-                value={formData.fuelOnboard}
-                onChange={handleInputChange}
-                className={`form-control ${errors.fuelOnboard ? 'error' : ''}`}
-                placeholder="Fuel in gallons"
-                min="0"
-                step="0.1"
-                max={selectedAircraft?.max_fuel_capacity}
-                required
-              />
-              {errors.fuelOnboard && <span className="error-message">{errors.fuelOnboard}</span>}
-              {selectedAircraft && !errors.fuelOnboard && (
-                <small className="form-hint">
-                  Max: {selectedAircraft.max_fuel_capacity} gal ({(selectedAircraft.max_fuel_capacity * selectedAircraft.fuel_weight_per_gallon).toFixed(0)} lbs)
-                </small>
-              )}
-            </div>
-            <div className="form-group">
-              <label htmlFor="baggageWeight">Total Baggage Weight (lbs) *</label>
-              <input
-                type="number"
-                id="baggageWeight"
-                name="baggageWeight"
-                value={formData.baggageWeight}
-                onChange={handleInputChange}
-                className={`form-control ${errors.baggageWeight ? 'error' : ''}`}
-                placeholder="Total baggage weight"
-                min="0"
-                step="0.1"
-                max={selectedAircraft?.max_baggage_weight}
-                required
-              />
-              {errors.baggageWeight && <span className="error-message">{errors.baggageWeight}</span>}
-              {selectedAircraft && !errors.baggageWeight && (
-                <small className="form-hint">Max: {selectedAircraft.max_baggage_weight} lbs</small>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <PassengerList
-          passengers={passengers}
-          setPassengers={setPassengers}
-          maxPassengers={selectedAircraft?.max_passengers || 0}
-          maxRows={selectedAircraft ? (selectedAircraft.passenger_row3_arm ? 3 : selectedAircraft.passenger_row2_arm ? 2 : 1) : 0}
-        />
-
-        {selectedAircraft && passengers.length > 0 && (
-          <SeatingChart passengers={passengers} aircraft={selectedAircraft} />
-        )}
-
-        {calculations && (
-          <>
-            <WeightBalanceDisplay
-              calculations={calculations}
-              aircraft={selectedAircraft}
-            />
-            <WarningPanel warnings={calculations.warnings} />
-          </>
-        )}
-
-        <div className="form-actions">
+        <div className="header-actions">
           <button
             onClick={handleSaveManifest}
             disabled={saving || !selectedAircraft}
-            className="btn-primary"
+            className="btn-save-header"
           >
-            {saving ? 'SAVING...' : 'SAVE FLIGHT MANIFEST'}
+            {saving ? 'SAVING...' : 'SAVE MANIFEST'}
           </button>
           {onCancel && (
-            <button onClick={onCancel} className="btn-secondary">
+            <button onClick={onCancel} className="btn-cancel-header">
               CANCEL
             </button>
           )}
         </div>
       </div>
+
+      <div className="manifest-form-grid">
+        <div className="form-sidebar">
+          <div className="sidebar-section">
+            <h3>Aircraft Selection</h3>
+            <select
+              value={selectedAircraft?.id || ''}
+              onChange={handleAircraftChange}
+              className={`form-control-new ${errors.aircraft ? 'error' : ''}`}
+            >
+              <option value="">Select Aircraft...</option>
+              {aircraft.map(a => (
+                <option key={a.id} value={a.id}>
+                  {a.name} - {a.registration}
+                </option>
+              ))}
+            </select>
+            {errors.aircraft && <span className="error-message">{errors.aircraft}</span>}
+
+            {selectedAircraft && (
+              <div className="aircraft-specs-compact">
+                <div className="spec-compact">
+                  <span>Max Weight:</span>
+                  <strong>{selectedAircraft.max_gross_weight} lb</strong>
+                </div>
+                <div className="spec-compact">
+                  <span>Max Passengers:</span>
+                  <strong>{selectedAircraft.max_passengers}</strong>
+                </div>
+                <div className="spec-compact">
+                  <span>Max Fuel:</span>
+                  <strong>{selectedAircraft.max_fuel_capacity} gal</strong>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="sidebar-section">
+            <h3>Flight Information</h3>
+            <div className="form-field">
+              <label>Flight Number *</label>
+              <input
+                type="text"
+                name="flightNumber"
+                value={formData.flightNumber}
+                onChange={handleInputChange}
+                className={`form-control-new ${errors.flightNumber ? 'error' : ''}`}
+                placeholder="SA123"
+              />
+              {errors.flightNumber && <span className="error-message">{errors.flightNumber}</span>}
+            </div>
+
+            <div className="form-field">
+              <label>Flight Date *</label>
+              <input
+                type="date"
+                name="flightDate"
+                value={formData.flightDate}
+                onChange={handleInputChange}
+                className="form-control-new"
+              />
+            </div>
+
+            <div className="form-field">
+              <label>Departure Time *</label>
+              <input
+                type="time"
+                name="departureTime"
+                value={formData.departureTime}
+                onChange={handleInputChange}
+                className={`form-control-new ${errors.departureTime ? 'error' : ''}`}
+              />
+              {errors.departureTime && <span className="error-message">{errors.departureTime}</span>}
+            </div>
+
+            <div className="form-field">
+              <label>Arrival Time *</label>
+              <input
+                type="time"
+                name="arrivalTime"
+                value={formData.arrivalTime}
+                onChange={handleInputChange}
+                className={`form-control-new ${errors.arrivalTime ? 'error' : ''}`}
+              />
+              {errors.arrivalTime && <span className="error-message">{errors.arrivalTime}</span>}
+            </div>
+          </div>
+
+          <div className="sidebar-section">
+            <h3>Crew Information</h3>
+            <div className="form-field">
+              <label>Pilot in Command *</label>
+              <input
+                type="text"
+                name="pilotInCommand"
+                value={formData.pilotInCommand}
+                onChange={handleInputChange}
+                className={`form-control-new ${errors.pilotInCommand ? 'error' : ''}`}
+                placeholder="Captain Name"
+              />
+              {errors.pilotInCommand && <span className="error-message">{errors.pilotInCommand}</span>}
+            </div>
+
+            <div className="form-field">
+              <label>Second in Command</label>
+              <input
+                type="text"
+                name="secondInCommand"
+                value={formData.secondInCommand}
+                onChange={handleInputChange}
+                className="form-control-new"
+                placeholder="First Officer (optional)"
+              />
+            </div>
+
+            <div className="form-field">
+              <label>Total Crew Weight (lb) *</label>
+              <input
+                type="number"
+                name="pilotWeight"
+                value={formData.pilotWeight}
+                onChange={handleInputChange}
+                className={`form-control-new ${errors.pilotWeight ? 'error' : ''}`}
+                placeholder="0"
+                min="0"
+              />
+              {errors.pilotWeight && <span className="error-message">{errors.pilotWeight}</span>}
+            </div>
+          </div>
+
+          <div className="sidebar-section">
+            <h3>Fuel</h3>
+            <div className="form-field">
+              <label>Fuel Onboard (gal) *</label>
+              <input
+                type="number"
+                name="fuelOnboard"
+                value={formData.fuelOnboard}
+                onChange={handleInputChange}
+                className={`form-control-new ${errors.fuelOnboard ? 'error' : ''}`}
+                placeholder="0"
+                min="0"
+                max={selectedAircraft?.max_fuel_capacity}
+              />
+              {errors.fuelOnboard && <span className="error-message">{errors.fuelOnboard}</span>}
+            </div>
+          </div>
+        </div>
+
+        <div className="form-main">
+          <InteractiveAircraftDiagram
+            aircraft={selectedAircraft}
+            passengers={passengers}
+            onSeatClick={handleSeatClick}
+            onCargoClick={handleCargoClick}
+            fuel={formData.fuelOnboard ? parseFloat(formData.fuelOnboard) * (selectedAircraft?.fuel_weight_per_gallon || 6) : 0}
+            baggage={baggage}
+          />
+
+          {calculations && (
+            <div className="calculations-section">
+              <WeightBalanceDisplay
+                calculations={calculations}
+                aircraft={selectedAircraft}
+              />
+              <WarningPanel warnings={calculations.warnings} />
+            </div>
+          )}
+        </div>
+      </div>
+
+      <SeatModal
+        isOpen={seatModalOpen}
+        onClose={() => setSeatModalOpen(false)}
+        seatNumber={selectedSeat?.seatNumber}
+        passenger={selectedSeat?.passenger}
+        onSave={handleSaveSeat}
+        onRemove={handleRemoveSeat}
+      />
+
+      <CargoModal
+        isOpen={cargoModalOpen}
+        onClose={() => setCargoModalOpen(false)}
+        area={selectedCargoArea}
+        weight={baggage[selectedCargoArea]}
+        onSave={handleSaveCargo}
+      />
     </div>
   );
 }
