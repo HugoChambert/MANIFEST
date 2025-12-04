@@ -67,21 +67,48 @@ function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
     setErrors({ ...errors, [name]: '' });
   };
 
-  const handleSeatClick = (seatNumber) => {
-    const existingPassenger = passengers.find(p => p.seat === seatNumber);
-    setSelectedSeat({ seatNumber, passenger: existingPassenger });
+  const handleSeatClick = (seatId, seatInfo) => {
+    setSelectedSeat({ seatId, seatInfo });
     setSeatModalOpen(true);
   };
 
   const handleSaveSeat = (passengerData) => {
     setPassengers(prev => {
-      const filtered = prev.filter(p => p.seat !== passengerData.seat);
+      const filtered = prev.filter(p =>
+        !(p.rowNumber === passengerData.rowNumber && p.seatPosition === passengerData.seatPosition)
+      );
       return [...filtered, passengerData];
     });
   };
 
-  const handleRemoveSeat = (seatNumber) => {
-    setPassengers(prev => prev.filter(p => p.seat !== seatNumber));
+  const handleRemoveSeat = (seatId) => {
+    setPassengers(prev => prev.filter(p => {
+      const currentSeatId = `${p.rowNumber}${p.seatPosition}`;
+      return currentSeatId !== seatId;
+    }));
+  };
+
+  const handleSwapSeats = (source, target) => {
+    setPassengers(prev => {
+      const updated = prev.map(p => {
+        if (source.occupant && p.rowNumber === source.row && p.seatPosition === source.letter) {
+          return {
+            ...p,
+            rowNumber: target.row,
+            seatPosition: target.letter
+          };
+        }
+        if (target.occupant && p.rowNumber === target.row && p.seatPosition === target.letter) {
+          return {
+            ...p,
+            rowNumber: source.row,
+            seatPosition: source.letter
+          };
+        }
+        return p;
+      });
+      return updated;
+    });
   };
 
   const handleCargoClick = (area) => {
@@ -364,10 +391,12 @@ function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
         <div className="form-main">
           <div className="seating-section">
             <h3>Seating Configuration</h3>
+            <p className="seating-hint">Click a seat to add or edit passengers. Drag and drop to move passengers between seats.</p>
             <SeatingChart
               aircraft={selectedAircraft}
               passengers={passengers}
               onSeatClick={handleSeatClick}
+              onSwapSeats={handleSwapSeats}
             />
             <PassengerList
               passengers={passengers}
@@ -410,8 +439,8 @@ function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
       <SeatModal
         isOpen={seatModalOpen}
         onClose={() => setSeatModalOpen(false)}
-        seatNumber={selectedSeat?.seatNumber}
-        passenger={selectedSeat?.passenger}
+        seatNumber={selectedSeat?.seatId}
+        seatInfo={selectedSeat?.seatInfo}
         onSave={handleSaveSeat}
         onRemove={handleRemoveSeat}
       />

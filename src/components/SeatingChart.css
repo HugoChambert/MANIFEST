@@ -101,21 +101,52 @@
   justify-content: center;
   position: relative;
   transition: all 0.2s;
-  cursor: help;
+  cursor: pointer;
 }
 
 .seat.empty {
   background: linear-gradient(135deg, #e2e8f0 0%, #f1f5f9 100%);
 }
 
+.seat.empty:hover {
+  background: linear-gradient(135deg, #cbd5e1 0%, #e2e8f0 100%);
+  border-color: #94a3b8;
+}
+
 .seat.occupied {
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   border-color: #1e40af;
   box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  cursor: grab;
+}
+
+.seat.occupied:active {
+  cursor: grabbing;
 }
 
 .seat:hover {
   transform: scale(1.05);
+}
+
+.seat.dragging {
+  opacity: 0.5;
+  transform: scale(0.95);
+  cursor: grabbing;
+}
+
+.seat.drag-over {
+  transform: scale(1.1);
+  border-color: #10b981;
+  border-width: 3px;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+.seat.drag-over.empty {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+}
+
+.seat.drag-over.occupied {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
 }
 
 .seat-label {

@@ -1,22 +1,22 @@
 import { useState, useEffect } from 'react';
 import './SeatModal.css';
 
-function SeatModal({ isOpen, onClose, seatNumber, passenger, onSave, onRemove }) {
+function SeatModal({ isOpen, onClose, seatNumber, seatInfo, onSave, onRemove }) {
   const [name, setName] = useState('');
   const [weight, setWeight] = useState('');
   const [baggageWeight, setBaggageWeight] = useState('');
 
   useEffect(() => {
-    if (passenger) {
-      setName(passenger.name || '');
-      setWeight(passenger.weight || '');
-      setBaggageWeight(passenger.baggage_weight || '');
+    if (seatInfo?.occupant) {
+      setName(seatInfo.occupant.name || '');
+      setWeight(seatInfo.occupant.weight || '');
+      setBaggageWeight(seatInfo.occupant.baggage_weight || '');
     } else {
       setName('');
       setWeight('');
       setBaggageWeight('');
     }
-  }, [passenger, isOpen]);
+  }, [seatInfo, isOpen]);
 
   if (!isOpen) return null;
 
@@ -30,7 +30,8 @@ function SeatModal({ isOpen, onClose, seatNumber, passenger, onSave, onRemove })
       name: name.trim(),
       weight: Number(weight),
       baggage_weight: Number(baggageWeight) || 0,
-      seat: seatNumber
+      rowNumber: seatInfo.row,
+      seatPosition: seatInfo.letter
     });
 
     onClose();
@@ -90,7 +91,7 @@ function SeatModal({ isOpen, onClose, seatNumber, passenger, onSave, onRemove })
         </div>
 
         <div className="modal-footer">
-          {passenger && (
+          {seatInfo?.occupant && (
             <button className="btn-modal-remove" onClick={handleRemove}>
               Remove Passenger
             </button>
@@ -100,7 +101,7 @@ function SeatModal({ isOpen, onClose, seatNumber, passenger, onSave, onRemove })
               Cancel
             </button>
             <button className="btn-modal-primary" onClick={handleSave}>
-              {passenger ? 'Update' : 'Add Passenger'}
+              {seatInfo?.occupant ? 'Update' : 'Add Passenger'}
             </button>
           </div>
         </div>

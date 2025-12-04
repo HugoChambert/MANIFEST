@@ -1,6 +1,10 @@
+import { useState } from 'react';
 import './SeatingChart.css';
 
-function SeatingChart({ passengers, aircraft }) {
+function SeatingChart({ passengers, aircraft, onSeatClick, onSwapSeats }) {
+  const [draggedSeat, setDraggedSeat] = useState(null);
+  const [dragOverSeat, setDragOverSeat] = useState(null);
+
   if (!aircraft) return null;
 
   const maxRows = aircraft.passenger_row3_arm ? 3 : aircraft.passenger_row2_arm ? 2 : 1;
@@ -11,6 +15,70 @@ function SeatingChart({ passengers, aircraft }) {
       p.rowNumber === row &&
       p.seatPosition.toUpperCase().includes(seatLetter.toUpperCase())
     );
+  };
+
+  const getSeatId = (row, letter) => `${row}${letter}`;
+
+  const handleDragStart = (e, row, letter, occupant) => {
+    if (!occupant) return;
+    const seatId = getSeatId(row, letter);
+    setDraggedSeat(seatId);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', seatId);
+  };
+
+  const handleDragOver = (e, row, letter) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    const seatId = getSeatId(row, letter);
+    setDragOverSeat(seatId);
+  };
+
+  const handleDragLeave = () => {
+    setDragOverSeat(null);
+  };
+
+  const handleDrop = (e, targetRow, targetLetter) => {
+    e.preventDefault();
+    const sourceSeatId = e.dataTransfer.getData('text/plain');
+    const targetSeatId = getSeatId(targetRow, targetLetter);
+
+    if (sourceSeatId === targetSeatId) {
+      setDraggedSeat(null);
+      setDragOverSeat(null);
+      return;
+    }
+
+    const sourceMatch = sourceSeatId.match(/^(\d+)([A-D])$/);
+    if (!sourceMatch) return;
+
+    const sourceRow = parseInt(sourceMatch[1]);
+    const sourceLetter = sourceMatch[2];
+
+    const sourceOccupant = getSeatOccupant(sourceRow, sourceLetter);
+    const targetOccupant = getSeatOccupant(targetRow, targetLetter);
+
+    if (onSwapSeats) {
+      onSwapSeats(
+        { row: sourceRow, letter: sourceLetter, occupant: sourceOccupant },
+        { row: targetRow, letter: targetLetter, occupant: targetOccupant }
+      );
+    }
+
+    setDraggedSeat(null);
+    setDragOverSeat(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedSeat(null);
+    setDragOverSeat(null);
+  };
+
+  const handleSeatClick = (row, letter, occupant) => {
+    if (onSeatClick) {
+      const seatId = getSeatId(row, letter);
+      onSeatClick(seatId, { row, letter, occupant });
+    }
   };
 
   const seatLetters = ['A', 'B', 'C', 'D'];
@@ -32,11 +100,22 @@ function SeatingChart({ passengers, aircraft }) {
                 <div className="seat-group left">
                   {seatLetters.slice(0, 2).map(letter => {
                     const occupant = getSeatOccupant(row, letter);
+                    const seatId = getSeatId(row, letter);
+                    const isDragging = draggedSeat === seatId;
+                    const isDragOver = dragOverSeat === seatId;
+
                     return (
                       <div
                         key={letter}
-                        className={`seat ${occupant ? 'occupied' : 'empty'}`}
-                        title={occupant ? `${occupant.name} (${occupant.weight} lbs)` : 'Empty'}
+                        className={`seat ${occupant ? 'occupied' : 'empty'} ${isDragging ? 'dragging' : ''} ${isDragOver ? 'drag-over' : ''}`}
+                        title={occupant ? `${occupant.name} (${occupant.weight} lbs) - Drag to move` : 'Empty - Click to add passenger'}
+                        draggable={!!occupant}
+                        onClick={() => handleSeatClick(row, letter, occupant)}
+                        onDragStart={(e) => handleDragStart(e, row, letter, occupant)}
+                        onDragOver={(e) => handleDragOver(e, row, letter)}
+                        onDragLeave={handleDragLeave}
+                        onDrop={(e) => handleDrop(e, row, letter)}
+                        onDragEnd={handleDragEnd}
                       >
                         <div className="seat-label">{row}{letter}</div>
                         {occupant && (
@@ -53,11 +132,22 @@ function SeatingChart({ passengers, aircraft }) {
                 <div className="seat-group right">
                   {seatLetters.slice(2, 4).map(letter => {
                     const occupant = getSeatOccupant(row, letter);
+                    const seatId = getSeatId(row, letter);
+                    const isDragging = draggedSeat === seatId;
+                    const isDragOver = dragOverSeat === seatId;
+
                     return (
                       <div
                         key={letter}
-                        className={`seat ${occupant ? 'occupied' : 'empty'}`}
-                        title={occupant ? `${occupant.name} (${occupant.weight} lbs)` : 'Empty'}
+                        className={`seat ${occupant ? 'occupied' : 'empty'} ${isDragging ? 'dragging' : ''} ${isDragOver ? 'drag-over' : ''}`}
+                        title={occupant ? `${occupant.name} (${occupant.weight} lbs) - Drag to move` : 'Empty - Click to add passenger'}
+                        draggable={!!occupant}
+                        onClick={() => handleSeatClick(row, letter, occupant)}
+                        onDragStart={(e) => handleDragStart(e, row, letter, occupant)}
+                        onDragOver={(e) => handleDragOver(e, row, letter)}
+                        onDragLeave={handleDragLeave}
+                        onDrop={(e) => handleDrop(e, row, letter)}
+                        onDragEnd={handleDragEnd}
                       >
                         <div className="seat-label">{row}{letter}</div>
                         {occupant && (
@@ -83,11 +173,11 @@ function SeatingChart({ passengers, aircraft }) {
       <div className="seating-legend">
         <div className="legend-item">
           <div className="legend-seat occupied"><div className="occupant-initial">A</div></div>
-          <span>Occupied</span>
+          <span>Occupied (Drag to move)</span>
         </div>
         <div className="legend-item">
           <div className="legend-seat empty"></div>
-          <span>Empty</span>
+          <span>Empty (Click to add)</span>
         </div>
       </div>
     </div>
