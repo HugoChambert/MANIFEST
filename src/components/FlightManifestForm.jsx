@@ -7,6 +7,7 @@ import WarningPanel from './WarningPanel';
 import WeightBalanceDisplay from './WeightBalanceDisplay';
 import SeatingChart from './SeatingChart';
 import PassengerList from './PassengerList';
+import Toast from './Toast';
 import './FlightManifestForm.css';
 
 function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
@@ -33,6 +34,9 @@ function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
   const [cargoModalOpen, setCargoModalOpen] = useState(false);
   const [selectedCargoArea, setSelectedCargoArea] = useState(null);
 
+  const [toasts, setToasts] = useState([]);
+  const [lastCriticalWarnings, setLastCriticalWarnings] = useState([]);
+
   useEffect(() => {
     if (selectedAircraft && formData.pilotWeight && formData.fuelOnboard !== '') {
       const totalBaggage = baggage.forward + baggage.aft;
@@ -44,6 +48,40 @@ function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
       setCalculations(result);
     }
   }, [selectedAircraft, formData, passengers, baggage]);
+
+  useEffect(() => {
+    if (calculations && calculations.warnings) {
+      const criticalWarnings = calculations.warnings.filter(w => w.type === 'critical');
+      const warningWarnings = calculations.warnings.filter(w => w.type === 'warning');
+
+      const newCriticalTitles = criticalWarnings.map(w => w.title);
+      const previousCriticalTitles = lastCriticalWarnings.map(w => w.title);
+
+      criticalWarnings.forEach(warning => {
+        if (!previousCriticalTitles.includes(warning.title)) {
+          addToast(warning.title, 'error', 5000);
+        }
+      });
+
+      warningWarnings.forEach(warning => {
+        if (!previousCriticalTitles.includes(warning.title) &&
+            !lastCriticalWarnings.some(w => w.title === warning.title)) {
+          addToast(warning.title, 'warning', 4000);
+        }
+      });
+
+      setLastCriticalWarnings(criticalWarnings);
+    }
+  }, [calculations]);
+
+  const addToast = (message, type, duration = 3000) => {
+    const id = Date.now();
+    setToasts(prev => [...prev, { id, message, type, duration }]);
+  };
+
+  const removeToast = (id) => {
+    setToasts(prev => prev.filter(toast => toast.id !== id));
+  };
 
   const handleAircraftChange = (e) => {
     const aircraftId = e.target.value;
@@ -452,6 +490,18 @@ function FlightManifestForm({ aircraft, onSaveSuccess, onCancel }) {
         weight={baggage[selectedCargoArea]}
         onSave={handleSaveCargo}
       />
+
+      <div className="toast-container">
+        {toasts.map(toast => (
+          <Toast
+            key={toast.id}
+            message={toast.message}
+            type={toast.type}
+            duration={toast.duration}
+            onClose={() => removeToast(toast.id)}
+          />
+        ))}
+      </div>
     </div>
   );
 }
